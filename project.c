@@ -5,20 +5,35 @@
 int main() 
 { 
  
-  int count,j,n,time,remain,flag=0,time_quantum; 
-  int wait_time=0,turnaround_time=0,at[10],bt[10],rt[10]; 
-  printf("Enter Total Process:\t "); 
-  scanf("%d",&n); 
-  remain=n; 
-  for(count=0;count<n;count++) 
-  { 
-    printf("Enter Arrival Time and Burst Time for Process Process Number %d :",count+1); 
-    scanf("%d",&at[count]); 
-    scanf("%d",&bt[count]); 
-    rt[count]=bt[count]; 
-  } 
-  printf("Enter Time Quantum:\t"); 
-  scanf("%d",&time_quantum); 
-  printf("\n\nProcess\t|Turnaround Time|Waiting Time\n\n"); 
-  
-  }
+  main()
+{
+int p[20],bt[20], su[20], wt[20],tat[20],i, k, n, temp;
+float wtavg, tatavg;
+clrscr();
+printf("Enter the number of processes --- ");
+scanf("%d",&n);
+for(i=0;i<n;i++)
+{
+p[i] = i;
+printf("Enter the Burst Time of Process %d --- ", i);
+scanf("%d",&bt[i]);
+printf("System/User Process (0/1) ? --- ");
+scanf("%d", &su[i]);
+}
+for(i=0;i<n;i++)
+for(k=i+1;k<n;k++)
+if(su[i] > su[k])
+{
+temp=p[i];
+p[i]=p[k];
+p[k]=temp;
+temp=bt[i];
+bt[i]=bt[k];
+bt[k]=temp;
+temp=su[i];
+su[i]=su[k];
+su[k]=temp;
+}
+getch();
+}
+
