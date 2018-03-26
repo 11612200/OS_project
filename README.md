@@ -13,7 +13,7 @@ And it also seen that a faculty can also request for a resource so there a queue
 
 
 Process       : p1 p2 p3 p4 p5
-Queue         : Q1 Q2 Q3 Q4 Q5
+Queue         : Q1 Q2 Q2 Q1 Q1
 Burst time    : 4  4   3  2  5
 Arrival time  : 0  1   2  2  8
 
