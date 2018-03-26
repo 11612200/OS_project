@@ -1,39 +1,53 @@
 #include<stdio.h>
 #include<unistd.h>
-#include<stdlib.h>
-
-int main() 
-{ 
- 
-  main()
+main()
 {
-int p[20],bt[20], su[20], wt[20],tat[20],i, k, n, temp;
-float wtavg, tatavg;
-clrscr();
-printf("Enter the number of processes --- ");
-scanf("%d",&n);
-for(i=0;i<n;i++)
-{
-p[i] = i;
-printf("Enter the Burst Time of Process %d --- ", i);
-scanf("%d",&bt[i]);
-printf("System/User Process (0/1) ? --- ");
-scanf("%d", &su[i]);
+int bt[10],at[10],rt[10],q[10,p[10]; // array for burst time ,arrival time  and remaining time, queue
+int q1[10],q2[10],l=0,m=0;
+float tournaround=0,waiting=0;
+int student,faculty,total,time=0,tq,d;
+printf("\nEnter the total number of people");
+scanf("%d",&total);
+int i,j,temp;
+	for(i=0;i<total;i++)
+	{
+	printf("\nYou are student(0) or Faculty(1)");
+	scanf("%d",&d);
+	p[i]=d;
+	if(d==0)
+	l++;
+	else
+	{m++;}
+	printf("\nEnter the burst time for p%d",i);
+	scanf("%d",&bt[i];
+	printf("\nEnter the arrival time for p%d",i);
+	scanf("%d",&at[i];
+	rt[i]=bt[i];
+	}
+	
+	printf("\nEnter the Time Quantum: ");
+	scanf("%d",&tq);
+	for(i=0;i<total;i++) // sorting on the basis of arrival time
+		{
+		for(j=0;i<total;j++)
+		{
+		 if(at[j+1]<a[j])
+			{
+			temp=at[j+1];
+			at[j+1]=at[j];
+			at[j]=temp;
+			temp=bt[j+1];
+			bt[j+1]=bt[j];
+			bt[j]=temp;
+			temp=p[j+1];
+			p[j+1]=p[j];
+			p[j]=temp;
+			}          
+		}
+		}
+	for(i=0;i<total;i++)
+	{
+	t++;
+	if(p[i]==0)
+	rt[i]=bt[i]-tq;	
 }
-for(i=0;i<n;i++)
-for(k=i+1;k<n;k++)
-if(su[i] > su[k])
-{
-temp=p[i];
-p[i]=p[k];
-p[k]=temp;
-temp=bt[i];
-bt[i]=bt[k];
-bt[k]=temp;
-temp=su[i];
-su[i]=su[k];
-su[k]=temp;
-}
-getch();
-}
-
