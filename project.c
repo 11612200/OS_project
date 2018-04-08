@@ -163,8 +163,13 @@ for(time=p[0].at;time<sum_bt+p[0].at;)       // run until the total burst time r
    if(p[i].rt<=tq)
    {                          // for processes having remaining time with less than or  equal  to time quantum  
                       
-					  float g=time; 
+  float g=time; 
 time+=p[i].rt;
+  if(time>24)
+{
+	printf("\n\t\t\t XXX  Further queries  cannot  be handled  XXX\n\n");
+	break;
+} 
 p[i].rt=0;
 p[i].completed=1;
     if(p[i].pt==1)
@@ -192,6 +197,11 @@ p[i].completed=1;
     {
     	float m=time;
     time+=tq;
+      if(time>24)
+{
+	printf("\n\t\t\t XXX  Further queries  cannot  be handled  XXX\n\n");
+	break;
+} 
     p[i].rt-=tq;
     if(p[i].pt==1)
     printf("\t\t\tfaculty %c (%.2f-%.2f)\n",p[i].name,m,time);
