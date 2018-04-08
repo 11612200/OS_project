@@ -11,6 +11,7 @@ float at,bt,wt,tt,rt,pt,qt;   // arrival time, burst time, waiting time , turnar
 int completed;
 float ntt;
 }p[10];
+
 int n;
 float q[10],q2[10];  // two queues one for student  other for the faculty
 int front=-1,rear=-1,front2=-1,rear2=-1;
@@ -106,7 +107,7 @@ float time=0,sum_bt=0,tq;
 pthread_t t1;
 int i,j;
 char c;
-        float avgqt=0;
+        float totqt=0;
  printf("_____________________________________________________________________________\n");
  printf("--------------------ONINE SYSTEM FOR HANDLING QUERIES-------------------------\n"); 
  printf("______________________________________________________________________________\n");      
@@ -118,6 +119,20 @@ char c;
  printf("\nEnter the arrival time and burst time of process and priority(1 for faculty/ 2 for student) %c: ",p[i].name);
 
  scanf("%f%f%f",&p[i].at,&p[i].bt,&p[i].pt);
+ if(p[i].bt<=0)
+ {
+ 	printf("\n\n\tXXX Invalid Burst Time, (must be >0) enter again ----XXX");
+ 	printf("\nEnter the arrival time and burst time of process and priority(1/2) %c: ",p[i].name);
+ 	scanf("%f%f%f",&p[i].at,&p[i].bt,&p[i].pt);
+ 	
+ }
+  
+  if(p[i].pt!=1||p[i].pt!=2)
+ {
+ 	printf("\n   XXX Wrong priority XXX must  be only \"1\" for student and \"2\" for  faculty\n");
+ 	printf("\n\t Press ENTER to again fill the  details\n");
+ }
+ 
 if(p[i].at<10||p[i].at>24)
 {
 	printf("\n\n\t XXXX  arrival time should be between(10-24) and minutes in decimal XXXX");  /* time is taken as 24 hour system (time shoud be between 10 am  to 12 am i.e, 10-24)
@@ -233,9 +248,9 @@ p[i].completed=1;
 
 printf("\n\tName\tAT\tBT\tWT\tTT\tQueury Time\n");
 for(i=0;i<n;i++)
-{avgqt+=p[i].qt;
+{totqt+=p[i].qt;
 printf("\n\t%c\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f",p[i].name,p[i].at,p[i].bt,p[i].wt,p[i].tt,p[i].qt);
 }
-printf("\n\nTotal time he spend on queury is : %.2f",avgqt);
-printf("\n\nAverage query time:%.2f\n\n\n",avgqt/n);
+printf("\n\nTotal time he spend on queury is : %.2f",totqt);
+printf("\n\nAverage query time:%.2f\n\n\n",totqt/n);
 }
