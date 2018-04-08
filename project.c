@@ -1,20 +1,24 @@
-#include<bits/stdc++.h>
+//#####################################################################################################################################################
+//--------------------------------------------------- ONLINE SYSTEM FOR HNDLING QUERIES----------------------------------------------------------------
+//#####################################################################################################################################################
+
+#include<pthread.h>
+#include<stdio.h>
 struct process
 {
 char name;
-int at,bt,wt,tt,rt,pt,qt;
+float at,bt,wt,tt,rt,pt,qt;   // arrival time, burst time, waiting time , turnaround time , remaining  time ,  priority, query time
 int completed;
 float ntt;
 }p[10];
 int n;
-int q[10],q2[10];  // two queues
+float q[10],q2[10];  // two queues one for student  other for the faculty
 int front=-1,rear=-1,front2=-1,rear2=-1;
 
 
-void enqueue(int i)
+void enqueue(int i)    // for entering the process/student  in the queue 1
 {
-//if(rear==10)
-//printf("overflow");
+	
 rear++;
 q[rear]=i;
 if(front==-1)
@@ -22,9 +26,9 @@ front=0;
 
 }
 
-int dequeue()
+int dequeue()  // for removing  the process student out of  the queue 1
 {
- 	if(front==-1)    //  ****
+ 	if(front==-1)    
 	return -1;	
 int temp=q[front];
 if(front==rear)
@@ -34,7 +38,7 @@ front++;
 return temp;
 }
 
-int isInQueue(int i)
+int isInQueue(int i)  // for checking whether process is already there in the queue 1
 {int k;
 for(k=front;k<=rear;k++)
 {
@@ -45,7 +49,7 @@ return 0;
 }
 
 
-void enqueue2(int i)
+void enqueue2(int i)  // for entering the process/faculty  in the queue 2
 {
 //if(rear2==10)
 //printf("overflow");
@@ -56,7 +60,7 @@ front2=0;
 
 }
 
-int dequeue2()
+int dequeue2()        // for removing  the process/faculty out of  the queue 2
 {
 if(front2==-1)
 return -1;
@@ -69,7 +73,7 @@ front2++;
 return temp;
 }
 
-int isInQueue2(int i)
+int isInQueue2(int i)     // for checking whether process is already there in the queue 2
 {int k;
 for(k=front2;k<=rear2;k++)
 {
@@ -80,7 +84,7 @@ return 0;
 }
 
 
-void sortByArrival()
+void sortByArrival()     // sorting the process with their  busrt time and on the basis of their arrival time.
 {
 struct process temp;
 int i,j;
@@ -98,16 +102,30 @@ p[j]=temp;
 
 int main()
 {
-int i,j,time=0,sum_bt=0,tq;
+float time=0,sum_bt=0,tq;
+pthread_t t1;
+int i,j;
 char c;
         float avgqt=0;
- printf("Enter no of processes:");
+ printf("_____________________________________________________________________________\n");
+ printf("--------------------ONINE SYSTEM FOR HANDLING QUERIES-------------------------\n"); 
+ printf("______________________________________________________________________________\n");      
+ printf("\n\nEnter no. of processes(students+faculty):");
  scanf("%d",&n);
  for(i=0,c='A';i<n;i++,c++)
  {
  p[i].name=c;
- printf("\nEnter the arrival time and burst time of process and priority(1/2) %c: ",p[i].name);
- scanf("%d%d%d",&p[i].at,&p[i].bt,&p[i].pt);
+ printf("\nEnter the arrival time and burst time of process and priority(1 for faculty/ 2 for student) %c: ",p[i].name);
+
+ scanf("%f%f%f",&p[i].at,&p[i].bt,&p[i].pt);
+if(p[i].at<10||p[i].at>24)
+{
+	printf("\n\n\t XXXX  arrival time should be between(10-24) and minutes in decimal XXXX");  /* time is taken as 24 hour system (time shoud be between 10 am  to 12 am i.e, 10-24)
+	                                                        minutes must be entered in decimal*/
+	printf("\n\nEnter the arrival time and burst time of process and priority(1/2) %c: ",p[i].name);
+	scanf("%f%f%f",&p[i].at,&p[i].bt,&p[i].pt);
+}
+
  p[i].rt=p[i].bt;
  p[i].completed=0;
  sum_bt+=p[i].bt;
@@ -115,9 +133,10 @@ char c;
 }
 int k,l;
 printf("\nEnter the time quantum:");
-scanf("%d",&tq);
+scanf("%f",&tq);
+pthread_create(&t1,NULL,sortByArrival,NULL);
+pthread_join(t1,NULL);
 
-sortByArrival();
 if(p[0].pt==1)
 enqueue(0);     // enqueue the first process in q[].   
 else
@@ -126,33 +145,38 @@ else
 	   }
 	   
 	           
-printf("Process execution order: ");
-for(time=p[0].at;time<sum_bt;)       // run until the total burst time reached
+printf("\n\nProcess execution order: \n");
+for(time=p[0].at;time<sum_bt+p[0].at;)       // run until the total burst time reached
 {  
- //if(p[0].pt==1)  
- //{		
+		
  		
  					
    i=dequeue();
-   if(i==-1)             // ****
+   if(i==-1)             
    {
-  // k=-1;
+  
    i=dequeue2();
    if(i==-1)
-   exit(0);       //**
+   //exit(0);
+   return -1;     
    }
    if(p[i].rt<=tq)
-   {                          /* for processes having remaining time with less than or  equal  to time quantum  */
-                       
+   {                          // for processes having remaining time with less than or  equal  to time quantum  
+                      
+					  float g=time; 
 time+=p[i].rt;
 p[i].rt=0;
-p[i].completed=1;          
-    printf(" %c ",p[i].name);
+p[i].completed=1;
+    if(p[i].pt==1)
+    printf("\t\t\tfaculty %c (%.2f-%.2f)\n",p[i].name,g,time);
+	else
+	printf("\t\t\tstudent %c (%.2f-%.2f)\n",p[i].name,g,time);        
+  //  printf(" %c ",p[i].name);
             p[i].wt=time-p[i].at-p[i].bt;
             p[i].tt=time-p[i].at;
 			p[i].qt=p[i].tt-p[i].wt;       
-            //p[i].ntt=((float)p[i].tt/p[i].bt);
-            for(j=0;j<n;j++)                /*enqueue the processes which have come  while scheduling */
+            
+            for(j=0;j<n;j++)                //enqueue the processes which have come  while scheduling 
             {
             if(p[j].at<=time && p[j].completed!=1 && isInQueue(j)!=1&&isInQueue2(j)!=1)
             {   
@@ -166,14 +190,20 @@ p[i].completed=1;
         }
     else               // more than time quantum
     {
+    	float m=time;
     time+=tq;
     p[i].rt-=tq;
-    printf(" %c ",p[i].name);
-    for(j=0;j<n;j++)    /*first enqueue the processes which have come while  scheduling */
+    if(p[i].pt==1)
+    printf("\t\t\tfaculty %c (%.2f-%.2f)\n",p[i].name,m,time);
+	else
+	printf("\t\t\tstudent %c (%.2f-%.2f)\n",p[i].name,m,time);        
+    //printf("\t\t\t%c (%.2f-%.2f)\n",p[i].name,m,time);
+    //printf(" %c ",p[i].name);
+    for(j=0;j<n;j++)                //first enqueue the processes which have come while  scheduling 
             {
             if(p[j].at<=time && p[j].completed!=1&&i!=j&& isInQueue(j)!=1&&isInQueue2(j)!=1)
              {
-			   if (p[j].pt==1)                                     // ***
+			   if (p[j].pt==1)                                     
                enqueue(j);
                else
                enqueue2(j);
@@ -181,74 +211,21 @@ p[i].completed=1;
             }
            }
            if(p[i].pt==1)
-           enqueue(i);   // then enqueue the uncompleted process
+           enqueue(i);      // then enqueue the uncompleted process
            else
            {enqueue2(i);}
            
     }
- //}
- /*else if(p[0].pt==2)
-  {
-  	int k=0;                //
-	    	i=dequeue2();
-	  if(i==-1)
-	  { k=-1;
-		   }     
-   if(p[i].rt<=tq||k==-1)
-   {                          // for processes having remaining time with less than  or  equal  to time quantum  
-                       
-time+=p[i].rt;
-p[i].rt=0;
-p[i].completed=1;          
-    printf(" %c ",p[i].name);
-            p[i].wt=time-p[i].at-p[i].bt;
-            p[i].tt=time-p[i].at;       
-            p[i].qt=p[i].tt-p[i].wt;
-			//p[i].ntt=((float)p[i].tt/p[i].bt);
-            for(j=0;j<n;j++)                  //enqueue the processes which have come  while scheduling 
-            {
-            if(p[j].at<=time && p[j].completed!=1&& isInQueue2(j)!=1)
-            {
-			    if(p[j].pt==2)
-            	enqueue2(j);
-            	else 
-            	enqueue(j);
-            
-            }
-           }
-        }
-    else               // more than time quantum
-    {
-    time+=tq;
-    p[i].rt-=tq;
-    printf(" %c ",p[i].name);
-    for(j=0;j<n;j++)               //first enqueue the processes which have come while scheduling 
-            {
-            if(p[j].at<=time && p[j].completed!=1&&i!=j&& isInQueue2(j)!=1)
-             {
-             	if(p[i].pt==2)
-                enqueue2(j);	
-				else 
-			 	enqueue(j);
-            
-            }
-           }
-           enqueue2(i);   // then enqueue the uncompleted process
-           
-    }  
-    
-
-  
-  }  */
-
+ 
         
 }
 
 
-printf("\nName\tArrival Time\tBurst Time\tWaiting Time\tTurnAround Time\tQueury Time");
+printf("\n\tName\tAT\tBT\tWT\tTT\tQueury Time\n");
 for(i=0;i<n;i++)
 {avgqt+=p[i].qt;
-printf("\n%c\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d",p[i].name,p[i].at,p[i].bt,p[i].wt,p[i].tt,p[i].qt);
+printf("\n\t%c\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f",p[i].name,p[i].at,p[i].bt,p[i].wt,p[i].tt,p[i].qt);
 }
-printf("\nAverage query time:%f\n",avgqt/n);
+printf("\n\nTotal time he spend on queury is : %.2f",avgqt);
+printf("\n\nAverage query time:%.2f\n\n\n",avgqt/n);
 }
