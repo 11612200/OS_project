@@ -118,19 +118,21 @@ char c;
  p[i].name=c;
  printf("\nEnter the arrival time and burst time of process and priority(1 for faculty/ 2 for student) %c: ",p[i].name);
 
- scanf("%f%f%f",&p[i].at,&p[i].bt,&p[i].pt);
+ scanf("%f%f%d",&p[i].at,&p[i].bt,&p[i].pt);
  if(p[i].bt<=0)
  {
  	printf("\n\n\tXXX Invalid Burst Time, (must be >0) enter again ----XXX");
  	printf("\nEnter the arrival time and burst time of process and priority(1/2) %c: ",p[i].name);
- 	scanf("%f%f%f",&p[i].at,&p[i].bt,&p[i].pt);
+ 	scanf("%f%f%d",&p[i].at,&p[i].bt,&p[i].pt);
  	
  }
   
-  if(p[i].pt!=1||p[i].pt!=2)
+  if(p[i].pt<1||p[i].pt>2)
  {
  	printf("\n   XXX Wrong priority XXX must  be only \"1\" for student and \"2\" for  faculty\n");
- 	printf("\n\t Press ENTER to again fill the  details\n");
+ 	printf("\n\t  fill the  details\n");
+ 	printf("\n\nEnter the arrival time and burst time of process and priority(1/2) %c: ",p[i].name);
+	scanf("%f%f%d",&p[i].at,&p[i].bt,&p[i].pt);
  }
  
 if(p[i].at<10||p[i].at>24)
@@ -138,7 +140,7 @@ if(p[i].at<10||p[i].at>24)
 	printf("\n\n\t XXXX  arrival time should be between(10-24) and minutes in decimal XXXX");  /* time is taken as 24 hour system (time shoud be between 10 am  to 12 am i.e, 10-24)
 	                                                        minutes must be entered in decimal*/
 	printf("\n\nEnter the arrival time and burst time of process and priority(1/2) %c: ",p[i].name);
-	scanf("%f%f%f",&p[i].at,&p[i].bt,&p[i].pt);
+	scanf("%f%f%d",&p[i].at,&p[i].bt,&p[i].pt);
 }
 
  p[i].rt=p[i].bt;
