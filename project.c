@@ -7,13 +7,14 @@
 struct process
 {
 char name;
-float at,bt,wt,tt,rt,pt,qt;   // arrival time, burst time, waiting time , turnaround time , remaining  time ,  priority, query time
+float at,bt,wt,tt,rt,qt;   // arrival time, burst time, waiting time , turnaround time , remaining  time , query time
+int pt;
 int completed;
 float ntt;
-}p[10];
+}p[20];
 
 int n;
-float q[10],q2[10];  // two queues one for student  other for the faculty
+float q[20],q2[20];  // two queues one for student  other for the faculty
 int front=-1,rear=-1,front2=-1,rear2=-1;
 
 
@@ -113,6 +114,12 @@ char c;
  printf("______________________________________________________________________________\n");      
  printf("\n\nEnter no. of processes(students+faculty):");
  scanf("%d",&n);
+ if(n>10)
+ {
+ 	printf("\n\n\t XXX  no.  of processes must be less than or equal to  10\n");
+ 	 printf("\n\nEnter no of processes:");
+	 scanf("%d",&n);
+ }
  for(i=0,c='A';i<n;i++,c++)
  {
  p[i].name=c;
@@ -163,7 +170,8 @@ else
 	   
 	           
 printf("\n\nProcess execution order: \n");
-for(time=p[0].at;time<sum_bt+p[0].at;)       // run until the total burst time reached
+sum_bt+=p[0].at;
+for(time=p[0].at;time<sum_bt;)       // run until the total burst time reached
 {  
 		
  		
@@ -174,8 +182,18 @@ for(time=p[0].at;time<sum_bt+p[0].at;)       // run until the total burst time r
   
    i=dequeue2();
    if(i==-1)
-   //exit(0);
-   return -1;     
+    {
+  		 i=i+1;
+  
+   		while(p[i].completed!=0)
+   		{
+   		i=i+1;}
+        sum_bt=sum_bt+p[i].at-time;   // idol time 
+   		time=p[i].at;
+   		
+	}
+   
+      
    }
    if(p[i].rt<=tq)
    {                          // for processes having remaining time with less than or  equal  to time quantum  
