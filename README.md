@@ -1,8 +1,5 @@
 # OS_project
 
-Student Name: Sangeeta Sharma
-Student ID :  1161200
-Email Address: 1998sangeetasharma@gmail.com
 
 
 In this multilevel queue schedulling is used. The scenario is two queues are there. Both will run in Round Robin fashion and each queue will be assing a priority.
