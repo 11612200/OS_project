@@ -1,6 +1,5 @@
 # Online System For Handling Queries Using multi-level Queue Scheduling
 
-https://11612200.github.io/OS_project/
 
 In this multilevel queue schedulling is used. The scenario is two queues are there. Both will run in Round Robin fashion and each queue will be assing a priority.
 It is better explained in this example.
