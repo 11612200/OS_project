@@ -1,4 +1,4 @@
-# OS_project
+# Online System For Handling Queries Using multi-level Queue Scheduling
 
 https://11612200.github.io/OS_project/
 
